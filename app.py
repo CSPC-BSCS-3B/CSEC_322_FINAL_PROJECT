@@ -26,6 +26,12 @@ pymysql.install_as_MySQLdb()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or secrets.token_hex(16)
+    
+    # Session security configuration
+    app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=30)  # Session expires after 30 minutes of inactivity
+    app.config['SESSION_COOKIE_SECURE'] = True  # Ensure cookies are only sent over HTTPS
+    app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to session cookie
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Restrict cookie sending to same-site requests (Lax allows GET requests from other sites)
 
     # CSRF Protection
     csrf.init_app(app)
