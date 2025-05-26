@@ -69,13 +69,13 @@ These improvements provide the following security benefits:
 To validate the rate limiting functionality:
 
 ```
-python test_rate_limits.py
+python tests/test_rate_limits.py
 ```
 
 You can also specify a custom base URL:
 
 ```
-python test_rate_limits.py --url http://your-app-url
+python tests/test_rate_limits.py --url http://your-app-url
 ```
 
 ### Expected Results

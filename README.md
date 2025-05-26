@@ -47,6 +47,21 @@ A user-friendly and responsive Flask-based banking application designed for depl
   - API rate limiting to prevent abuse
   - CSRF protection for all forms
 
+## Project Structure
+
+The project is organized into the following directories:
+
+- **Root Directory**: Contains the main application files (app.py, routes.py, etc.)
+- **docs/**: Documentation files
+  - `RATE_LIMITING.md`: Details about rate limiting security features
+  - `SESSION_SECURITY.md`: Information about session security implementation
+  - `CONTRIBUTION.md`: Guidelines for contributors
+- **tests/**: Test scripts and utilities
+  - `test_rate_limits.py`: Tests for rate limiting functionality
+- **templates/**: HTML templates for the web interface
+  - `admin/`: Admin dashboard and functionality templates
+  - `manager/`: Manager dashboard and functionality templates
+
 ## Getting Started
 
 ### Prerequisites
