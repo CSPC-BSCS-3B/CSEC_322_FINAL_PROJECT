@@ -64,14 +64,31 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
     limiter.init_app(app)
-    
-    # Register custom error handler for rate limiting
+      # Register custom error handler for rate limiting
     @app.errorhandler(RateLimitExceeded)
     def handle_rate_limit_exceeded(e):
+        # Add a delay to slow down attackers (helps against brute force)
+        import time
+        time.sleep(1)
+        
+        # Log the rate limit violation
+        app.logger.warning(f"Rate limit exceeded: {request.remote_addr} - {request.path}")
+        
         # Check if it's an API request (expecting JSON)
         if request.path.startswith('/api/') or request.headers.get('Accept') == 'application/json':
-            return jsonify({"error": "Rate limit exceeded", "message": str(e)}), 429
-        # Otherwise, return the HTML template
+            return jsonify({
+                "error": "Rate limit exceeded", 
+                "message": "Too many requests. Please try again later.",
+                "status_code": 429
+            }), 429
+        
+        # If it's a sensitive endpoint, provide minimal information
+        sensitive_endpoints = ['/login', '/reset_password', '/reset_password_request']
+        if any(request.path.startswith(endpoint) for endpoint in sensitive_endpoints):
+            return render_template('rate_limit_error.html', 
+                                 message="Too many attempts. Please try again later."), 429
+        
+        # For other endpoints, provide more detailed message
         return render_template('rate_limit_error.html', message=str(e)), 429
 
     return app
