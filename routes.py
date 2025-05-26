@@ -276,7 +276,7 @@ def reset_password(token):
     except SignatureExpired:
         flash('The password reset link has expired.')
         return redirect(url_for('reset_password_request'))
-    except:
+    except Exception as e:
         flash('Invalid reset link')
         return redirect(url_for('reset_password_request'))
     
