@@ -32,6 +32,8 @@ def create_app():
     app.config['SESSION_COOKIE_SECURE'] = True  # Ensure cookies are only sent over HTTPS
     app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to session cookie
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Restrict cookie sending to same-site requests (Lax allows GET requests from other sites)
+    app.config['SESSION_USE_SIGNER'] = True  # Sign the session cookie for added security
+    app.config['SESSION_REFRESH_EACH_REQUEST'] = True  # Update session with each request to reset expiry
 
     # CSRF Protection
     csrf.init_app(app)
@@ -64,7 +66,18 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
     limiter.init_app(app)
-      # Register custom error handler for rate limiting
+    
+    # Add cache control headers to all responses
+    @app.after_request
+    def add_cache_control(response):
+        if current_user.is_authenticated:
+            # No caching for authenticated users to prevent back button issues
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, private, max-age=0"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
+    # Register custom error handler for rate limiting
     @app.errorhandler(RateLimitExceeded)
     def handle_rate_limit_exceeded(e):
         # Add a delay to slow down attackers (helps against brute force)
