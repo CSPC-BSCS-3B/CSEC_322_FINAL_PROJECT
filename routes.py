@@ -130,10 +130,17 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Clear the session before logging out the user
+    # Clear the session completely before logging out the user
     session.clear()
+    
+    # Log the user out with Flask-Login
     logout_user()
-    return redirect(url_for('login'))
+    
+    # Set a flash message
+    flash('You have been logged out successfully.')
+    
+    # Redirect with cache busting parameter to prevent browser caching
+    return redirect(url_for('login', _t=datetime.datetime.utcnow().timestamp()))
 
 @app.route('/register', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
