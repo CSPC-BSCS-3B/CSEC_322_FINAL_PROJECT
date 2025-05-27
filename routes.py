@@ -41,8 +41,18 @@ def regenerate_session():
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin:
-            flash('You need to be an admin to access this page.')
+        if not current_user.is_authenticated:
+            flash('You need to be logged in to access this page.', 'danger')
+            return redirect(url_for('login'))
+        elif current_user.is_manager and request.path.startswith('/admin/'):
+            # For managers: show error message but don't redirect since they're already logged in
+            flash('Managers cannot access admin-specific functionality. Please use manager dashboard instead.', 'danger')
+            # Return a 403 Forbidden response with appropriate template or redirect
+            return render_template('error.html', 
+                                  title='Access Denied', 
+                                  message='You do not have permission to access this page.'), 403
+        elif not current_user.is_admin:
+            flash('You need to be an admin to access this page.', 'danger')
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
@@ -372,7 +382,7 @@ def create_account():
 
 @app.route('/admin/deposit', methods=['GET', 'POST'])
 @login_required
-@admin_required
+@admin_required  # This will now show an error for managers without redirecting
 @limiter.limit("30 per hour")
 def admin_deposit():
     form = DepositForm()
@@ -963,4 +973,4 @@ def manager_transfers():
     return render_template('manager/transfers.html', 
                          title='Transfer Transactions', 
                          transactions=transactions,
-                         users=users) 
+                         users=users)

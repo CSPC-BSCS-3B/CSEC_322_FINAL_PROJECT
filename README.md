@@ -304,7 +304,9 @@ If Redis is not available, the application will automatically fall back to in-me
 - Session regeneration after login to prevent session fixation attacks
 
 ### Authentication and Authorization
-- Role-based access control (User, Admin, Manager)
+- Role-based access control (User, Admin, Manager) with strict route protection
+- Strict separation between admin and manager role permissions
+- Prevention of URL manipulation to access unauthorized functionality
 - CSRF protection for all form submissions
 - Rate limiting to prevent brute force attacks
 - Case-insensitive username lookup with consistent timing
