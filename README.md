@@ -255,7 +255,7 @@ This integration ensures addresses are standardized and validates location data 
 - **Frontend**: HTML, CSS, Bootstrap 5
 - **Authentication**: Flask-Login, Werkzeug, Flask-Bcrypt
 - **Forms**: Flask-WTF, WTForms
-- **Security**: Flask-Limiter for API rate limiting, CSRF protection
+- **Security**: Flask-Limiter for API rate limiting, CSRF protection, Password strength validation
 - **External API**: PSGC API for Philippine geographic data
 
 ## Rate Limiting
@@ -282,6 +282,19 @@ By default, the rate limiting data is stored in memory. For production use, it's
    ```
 
 If Redis is not available, the application will automatically fall back to in-memory storage.
+
+## Security Features that are Added
+
+### Password Requirements
+- Minimum length of 8 characters
+- Must contain at least three of: lowercase letters, uppercase letters, digits, and special characters
+- Password hashing using bcrypt
+
+### Username Requirements
+- Length between 4-20 characters
+- Can only contain letters, numbers, underscores, dots, and hyphens
+- Unique across the system
+
 
 ## License
 
