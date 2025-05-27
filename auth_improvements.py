@@ -95,7 +95,7 @@ def fix_reset_password_form():
     reset_password_path = r"c:\Users\User\Desktop\CSEC_322_FINAL_PROJECT\templates\reset_password.html"
     
     if not os.path.exists(reset_password_path):
-        print(f"Warning: {reset_password_path} not found. Skipping update.")
+        print("Warning: Reset password template not found. Skipping update.")
         return
     
     with open(reset_password_path, 'r') as file:
