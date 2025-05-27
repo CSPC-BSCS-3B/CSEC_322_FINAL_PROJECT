@@ -5,8 +5,8 @@ from models import User
 import re
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(message="Username field cannot be empty")])
+    password = PasswordField('Password', validators=[DataRequired(message="Password field cannot be empty")])
     submit = SubmitField('Login')
 
     def validate(self, extra_validators=None):

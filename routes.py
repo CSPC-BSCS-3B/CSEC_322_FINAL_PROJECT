@@ -101,19 +101,20 @@ def login():
                 db.session.commit()
                 # Continue with login
             else:
-                flash('Invalid username or password')
+                flash('Invalid username or password', 'danger')
                 return redirect(url_for('login'))
         elif user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'danger')
             return redirect(url_for('login'))
           # Check if user account is active (unless they're an admin or manager)
         if user.status != 'active' and not user.is_admin and not user.is_manager:
             if user.status == 'pending':
-                flash('Your account is awaiting approval from an administrator.')
+                flash('Your account is awaiting approval from an administrator.', 'warning')
             else:  # deactivated
-                flash('Your account has been deactivated. Please contact an administrator.')
+                flash('Your account has been deactivated. Please contact an administrator.', 'danger')
             return redirect(url_for('login'))
-              # Make session permanent to respect the PERMANENT_SESSION_LIFETIME setting
+        
+        # Make session permanent to respect the PERMANENT_SESSION_LIFETIME setting
         login_user(user, remember=False)
         
         # Set session as permanent to apply timeout
@@ -136,8 +137,8 @@ def logout():
     # Log the user out with Flask-Login
     logout_user()
     
-    # Set a flash message
-    flash('You have been logged out successfully.')
+    # Set a flash message with success category
+    flash('You have been logged out successfully.', 'success')
     
     # Redirect with cache busting parameter to prevent browser caching
     return redirect(url_for('login', _t=datetime.datetime.utcnow().timestamp()))
@@ -153,7 +154,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been registered and is awaiting admin approval.')
+        flash('Your account has been registered and is awaiting admin approval.', 'info')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
