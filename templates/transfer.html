@@ -3,12 +3,12 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <div class="card">
+        <div class="bootstrap-card-neu">
             <div class="card-header">
-                <h4>Transfer Money</h4>
+                <h4 class="neu-text-primary"><i class="bi bi-arrow-left-right me-2"></i>Transfer Money</h4>
             </div>
             <div class="card-body">
-                <div class="alert alert-info">
+                <div class="neu-alert neu-alert-info">
                     Your current balance: <strong>₱{{ "%.2f"|format(current_user.balance) }}</strong>
                 </div>
                 
@@ -16,7 +16,7 @@
                     {{ form.hidden_tag() }}
                     
                     <div class="mb-3">
-                        <label class="form-label">Transfer Method</label>
+                        <label class="form-label glass-form-label neu-text-primary">Transfer Method</label>
                         <div class="btn-group w-100" role="group">
                             {% for subfield in form.transfer_type %}
                             <input type="radio" class="btn-check" name="transfer_type" id="{{ subfield.id }}" value="{{ subfield.data }}" autocomplete="off"
@@ -27,33 +27,39 @@
                     </div>
                     
                     <div class="mb-3" id="username-field">
-                        {{ form.recipient_username.label(class="form-label") }}
-                        {{ form.recipient_username(class="form-control") }}
+                        <label for="{{ form.recipient_username.id }}" class="glass-form-label neu-text-primary">
+                            <i class="bi bi-person me-2"></i>{{ form.recipient_username.label.text }}
+                        </label>
+                        {{ form.recipient_username(class="form-control glass-form-control") }}
                         {% for error in form.recipient_username.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
                     
                     <div class="mb-3" id="account-field" style="display: none;">
-                        {{ form.recipient_account.label(class="form-label") }}
-                        {{ form.recipient_account(class="form-control") }}
+                        <label for="{{ form.recipient_account.id }}" class="glass-form-label neu-text-primary">
+                            <i class="bi bi-credit-card me-2"></i>{{ form.recipient_account.label.text }}
+                        </label>
+                        {{ form.recipient_account(class="form-control glass-form-control") }}
                         {% for error in form.recipient_account.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
                     
                     <div class="mb-3">
-                        {{ form.amount.label(class="form-label") }}
+                        <label for="{{ form.amount.id }}" class="glass-form-label neu-text-primary">
+                            <i class="bi bi-cash-coin me-2"></i>{{ form.amount.label.text }}
+                        </label>
                         <div class="input-group">
                             <span class="input-group-text">₱</span>
-                            {{ form.amount(class="form-control") }}
+                            {{ form.amount(class="form-control glass-form-control") }}
                         </div>
                         {% for error in form.amount.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
                     </div>
-                    <div class="d-grid gap-2">
-                        {{ form.submit(class="btn btn-primary") }}
+                    <div class="d-grid gap-2 mt-4">
+                        {{ form.submit(class="btn neu-btn-primary", style="background-color: var(--neu-dark); color: white;") }}
                     </div>
                 </form>
             </div>
@@ -94,4 +100,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-{% endblock %} 
+{% endblock %}
