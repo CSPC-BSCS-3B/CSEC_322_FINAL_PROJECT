@@ -318,6 +318,8 @@ If Redis is not available, the application will automatically fall back to in-me
 - Protection against multiple form submissions
 - Logout confirmation to prevent accidental data loss during transactions
 - Prevention of accidental navigation away from unsaved changes
+- Debounced search functionality for improved performance with large datasets
+- Responsive table designs with scrollable containers for better data management
 
 
 ## License
