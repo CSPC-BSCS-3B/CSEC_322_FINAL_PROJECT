@@ -1,76 +1,78 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="bootstrap-card-neu">
-            <div class="card-header">
-                <h4 class="neu-text-primary"><i class="bi bi-person-plus me-2"></i>Create Account</h4>
-            </div>
-            <div class="card-body">
-                <form method="post" novalidate>
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        <label for="username" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-person me-2"></i>Username
-                        </label>
-                        {{ form.username(class="form-control glass-form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
-                        {% for error in form.username.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+<div class="container py-5">
+    <div class="bootstrap-card-neu">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 neu-text-primary"><i class="bi bi-person-plus me-2"></i>Create Account</h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <form method="post" novalidate>
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            <label for="username" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-person me-2"></i>Username
+                            </label>
+                            {{ form.username(class="form-control glass-form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
+                            {% for error in form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            <div class="form-text">
+                                Username must be 4-20 characters long and can only contain letters, numbers, underscores, dots, and hyphens.
+                            </div>
                         </div>
-                        {% endfor %}
-                        <div class="form-text">
-                            Username must be 4-20 characters long and can only contain letters, numbers, underscores, dots, and hyphens.
+                        <div class="mb-3">
+                            <label for="email" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-envelope me-2"></i>Email
+                            </label>
+                            {{ form.email(class="form-control glass-form-control" + (" is-invalid" if form.email.errors else ""), id="email") }}
+                            {% for error in form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-envelope me-2"></i>Email
-                        </label>
-                        {{ form.email(class="form-control glass-form-control" + (" is-invalid" if form.email.errors else ""), id="email") }}
-                        {% for error in form.email.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+                        <div class="mb-3">
+                            <label for="password" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-key me-2"></i>Password
+                            </label>
+                            {{ form.password(class="form-control glass-form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
+                            {% for error in form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            <div class="form-text">
+                                Password must be at least 8 characters long and contain at least three of: lowercase letters, uppercase letters, digits, and special characters.
+                            </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-key me-2"></i>Password
-                        </label>
-                        {{ form.password(class="form-control glass-form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
-                        {% for error in form.password.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+                        <div class="mb-3">
+                            <label for="password2" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Password
+                            </label>
+                            {{ form.password2(class="form-control glass-form-control" + (" is-invalid" if form.password2.errors else ""), id="password2") }}
+                            {% for error in form.password2.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                        <div class="form-text">
-                            Password must be at least 8 characters long and contain at least three of: lowercase letters, uppercase letters, digits, and special characters.
+                        
+                        <div class="neu-alert neu-alert-info mb-4">
+                            <i class="bi bi-info-circle me-2"></i>Your account will need approval from an administrator before you can use it.
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password2" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-check-circle me-2"></i>Confirm Password
-                        </label>
-                        {{ form.password2(class="form-control glass-form-control" + (" is-invalid" if form.password2.errors else ""), id="password2") }}
-                        {% for error in form.password2.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            {{ form.submit(class="btn neu-btn-primary", id="register-button", style="background-color: var(--neu-dark); color: white;") }}
                         </div>
-                        {% endfor %}
-                    </div>
+                    </form>
                     
-                    <div class="neu-alert neu-alert-info mb-4">
-                        <i class="bi bi-info-circle me-2"></i>Your account will need approval from an administrator before you can use it.
+                    <div class="mt-4 text-center">
+                        <p>Already have an account? <a href="{{ url_for('login') }}" class="neu-text-accent">Login here</a></p>
                     </div>
-                    
-                    <div class="d-grid gap-2 mt-4">
-                        {{ form.submit(class="btn neu-btn-primary", id="register-button", style="background-color: var(--neu-dark); color: white;") }}
-                    </div>
-                </form>
-                <div class="mt-4 text-center">
-                    <p>Already have an account? <a href="{{ url_for('login') }}" class="neu-text-accent">Login here</a></p>
                 </div>
             </div>
         </div>
