@@ -257,10 +257,10 @@ def execute_transfer():
         
         if current_user.transfer_money(recipient, amount):
             db.session.commit()
-            flash(f'Successfully transferred ₱{amount:.2f} to {recipient.username}')
+            flash(f'Successfully transferred ₱{amount:.2f} to {recipient.username}', 'success')
             return redirect(url_for('account'))
         else:
-            flash('Transfer failed. Please check your balance.')
+            flash('Transfer failed. Please check your balance.', 'danger')
             return redirect(url_for('transfer'))
     
     return redirect(url_for('transfer'))
@@ -334,7 +334,7 @@ def activate_user(user_id):
     
     # Ensure admin can only activate/deactivate users they can manage
     if not current_user.can_manage_user(user):
-        flash('You do not have permission to manage this user.')
+        flash('You do not have permission to manage this user.', 'danger')
         return redirect(url_for('admin_dashboard'))
         
     user.status = 'active'
@@ -343,7 +343,7 @@ def activate_user(user_id):
     # Regenerate session after privilege change for security
     regenerate_session()
     
-    flash(f'Account {user.username} has been activated.')
+    flash(f'Account {user.username} has been activated.', 'success')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/deactivate_user/<int:user_id>')
@@ -354,7 +354,7 @@ def deactivate_user(user_id):
     
     # Ensure admin can only activate/deactivate users they can manage
     if not current_user.can_manage_user(user):
-        flash('You do not have permission to manage this user.')
+        flash('You do not have permission to manage this user.', 'danger')
         return redirect(url_for('admin_dashboard'))
         
     user.status = 'deactivated'
@@ -362,7 +362,7 @@ def deactivate_user(user_id):
       # Regenerate session after privilege change for security
     regenerate_session()
     
-    flash(f'Account {user.username} has been deactivated.')
+    flash(f'Account {user.username} has been deactivated.', 'warning')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/create_account', methods=['GET', 'POST'])
@@ -376,7 +376,7 @@ def create_account():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('User account has been created.')
+        flash('User account has been created.', 'success')
         return redirect(url_for('admin_dashboard'))
     return render_template('admin/create_account.html', title='Create User Account', form=form)
 
@@ -396,12 +396,12 @@ def admin_deposit():
     if form.validate_on_submit():
         user = User.query.filter_by(account_number=form.account_number.data).first()
         if not user:
-            flash('User not found')
+            flash('User not found', 'danger')
             return redirect(url_for('admin_deposit'))
         
         # Admin can only deposit to active accounts (or admin/manager accounts)
         if user.status != 'active' and not user.is_admin and not user.is_manager:
-            flash('Cannot deposit to inactive account.')
+            flash('Cannot deposit to inactive account.', 'warning')
             return redirect(url_for('admin_deposit'))
         
         amount = form.amount.data
@@ -409,10 +409,10 @@ def admin_deposit():
         # Call deposit method
         if user.deposit(amount, current_user):
             db.session.commit()
-            flash(f'Successfully deposited ₱{amount:.2f} to {user.username}')
+            flash(f'Successfully deposited ₱{amount:.2f} to {user.username}', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            flash('Deposit failed.')
+            flash('Deposit failed.', 'danger')
             return redirect(url_for('admin_deposit'))
     
     return render_template('admin/deposit.html', title='Deposit Funds', form=form, account_details=account_details)
@@ -427,7 +427,7 @@ def edit_user(user_id):
     
     # Ensure admin can only edit users they can manage
     if not current_user.can_manage_user(user):
-        flash('You do not have permission to edit this user.')
+        flash('You do not have permission to edit this user.', 'danger')
         return redirect(url_for('admin_dashboard'))
     
     form = UserEditForm(user.email)
@@ -626,7 +626,7 @@ def edit_user(user_id):
             db.session.add(transaction)
         
         db.session.commit()
-        flash(f'User information for {user.username} has been updated.')
+        flash(f'User information for {user.username} has been updated.', 'success')
         return redirect(url_for('admin_dashboard'))
     
     return render_template('admin/edit_user.html', title='Edit User', form=form, user=user)
@@ -701,7 +701,7 @@ def create_admin():
         admin.set_password(form.password.data)
         db.session.add(admin)
         db.session.commit()
-        flash('Admin account has been created')
+        flash('Admin account has been created', 'success')
         return redirect(url_for('admin_list'))
     return render_template('manager/create_admin.html', title='Create Admin Account', form=form)
 
@@ -713,7 +713,7 @@ def toggle_admin(user_id):
     
     # Managers can only modify admins, not other managers
     if user.is_manager:
-        flash('You cannot modify another manager account.')
+        flash('You cannot modify another manager account.', 'danger')
         return redirect(url_for('manager_dashboard'))
     
     # Store original state to determine redirect
@@ -724,7 +724,7 @@ def toggle_admin(user_id):
     # If promoting to admin, ensure account is active
     if user.is_admin:
         user.status = 'active'  # Set status to active when promoting to admin
-        flash(f'User {user.username} has been promoted to admin.')
+        flash(f'User {user.username} has been promoted to admin.', 'success')
         db.session.commit()
         
         # Regenerate session after privilege change for security
@@ -732,7 +732,7 @@ def toggle_admin(user_id):
         
         return redirect(url_for('user_list'))
     else:
-        flash(f'User {user.username} has been demoted from admin.')
+        flash(f'User {user.username} has been demoted from admin.', 'warning')
         db.session.commit()
         
         # Regenerate session after privilege change for security
