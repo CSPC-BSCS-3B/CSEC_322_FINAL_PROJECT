@@ -316,6 +316,8 @@ If Redis is not available, the application will automatically fall back to in-me
 - Real-time client-side form validation
 - Empty field validation with descriptive error messages
 - Protection against multiple form submissions
+- Logout confirmation to prevent accidental data loss during transactions
+- Prevention of accidental navigation away from unsaved changes
 
 
 ## License
