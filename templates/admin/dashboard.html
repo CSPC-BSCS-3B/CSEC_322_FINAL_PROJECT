@@ -16,10 +16,11 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">User Accounts</h5>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+            <div class="card-body p-0"> <!-- Removed padding for better table appearance -->
+                <!-- Table container with fixed height and scrolling -->
+                <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="sticky-top bg-white"> <!-- Fixed header -->
                             <tr>
                                 <th>Username</th>
                                 <th>Full Name</th>
@@ -90,4 +91,29 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+
+<!-- Add custom styles for better table appearance -->
+<style>
+    .table-container {
+        border-radius: 0.25rem;
+    }
+    
+    .table-container .table {
+        margin-bottom: 0;
+    }
+    
+    /* Make sure the header sticks properly with correct styling */
+    .sticky-top {
+        top: 0;
+        z-index: 1020;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    /* Add some responsive adjustments */
+    @media (max-width: 767.98px) {
+        .table-container {
+            max-height: 400px;
+        }
+    }
+</style>
+{% endblock %}
