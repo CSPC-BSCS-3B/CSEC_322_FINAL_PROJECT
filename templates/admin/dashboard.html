@@ -18,11 +18,9 @@
                 <!-- Add search input -->
                 <div class="d-flex">
                     <div class="input-group" style="width: 300px;">
-                        <input type="text" id="user-search" class="form-control" 
-                               style="border: 1px solid #ced4da; border-radius: 0.25rem 0 0 0.25rem;"
+                        <input type="text" id="user-search" class="form-control search-input" 
                                placeholder="Search users..." aria-label="Search users">
-                        <button class="btn btn-outline-secondary" type="button" id="clear-search"
-                                style="border: 1px solid #ced4da; border-left: none;">
+                        <button class="btn btn-outline-secondary search-clear-btn" type="button" id="clear-search">
                             <i class="bi bi-x"></i>
                         </button>
                     </div>
@@ -130,6 +128,17 @@
         .table-container {
             max-height: 400px;
         }
+    }
+    
+    /* New classes for search input styling */
+    .search-input {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0 0 0.25rem;
+    }
+    
+    .search-clear-btn {
+        border: 1px solid #ced4da;
+        border-left: none;
     }
 </style>
 
