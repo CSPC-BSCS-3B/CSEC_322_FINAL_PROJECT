@@ -236,6 +236,113 @@ a:hover {
   box-shadow: var(--neu-shadow-inset);
 }
 
+/* Neumorphic List */
+.neu-list {
+  background-color: transparent;
+}
+
+.neu-list-item {
+  background-color: var(--neu-bg);
+  border: none;
+  border-radius: var(--neu-radius-sm);
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--neu-shadow-small);
+}
+
+.neu-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--neu-shadow);
+}
+
+/* Small card variant for tech stack */
+.neu-card-small {
+  background-color: var(--neu-bg);
+  border: none;
+  border-radius: var(--neu-radius);
+  box-shadow: var(--neu-shadow);
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+}
+
+.neu-card-small:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--neu-shadow-large);
+}
+
+.neu-text-primary {
+  color: var(--neu-dark);
+}
+
+.neu-text-accent {
+  color: var(--neu-accent);
+}
+
+/* Neumorphic Card - Updated with border */
+.neu-card {
+  background-color: var(--neu-bg);
+  border: 1px solid var(--neu-bg-darker);
+  border-radius: var(--neu-radius);
+  box-shadow: var(--neu-shadow);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem; /* Match Bootstrap card margin */
+}
+
+.neu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--neu-shadow-md);
+}
+
+.neu-card .card-header {
+  background-color: rgba(0, 0, 0, 0.03); /* Match Bootstrap card header bg */
+  border-bottom: 1px solid var(--neu-bg-darker);
+  padding: 0.75rem 1.25rem; /* Match Bootstrap card header padding */
+}
+
+.neu-card .card-body {
+  padding: 1.25rem; /* Match Bootstrap card body padding */
+}
+
+.neu-card .card-footer {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid var(--neu-bg-darker);
+  padding: 0.75rem 1.25rem;
+}
+
+/* Bootstrap-Compatible Card */
+.bootstrap-card-neu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--neu-bg);
+  background-clip: border-box;
+  border: 1px solid var(--neu-bg-darker);
+  border-radius: var(--neu-radius);
+  box-shadow: var(--neu-shadow);
+  margin-bottom: 1rem;
+}
+
+.bootstrap-card-neu > .card-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid var(--neu-bg-darker);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+}
+
+.bootstrap-card-neu > .card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.bootstrap-card-neu > .card-footer {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid var(--neu-bg-darker);
+  padding: 0.75rem 1.25rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .neu-navbar .nav-link {
