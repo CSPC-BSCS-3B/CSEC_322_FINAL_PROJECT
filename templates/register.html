@@ -16,6 +16,7 @@
                         {% for error in form.username.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
+                        <div class="form-text">Username can only contain letters, numbers, underscores, hyphens, and dots.</div>
                     </div>
                     <div class="mb-3">
                         {{ form.email.label(class="form-label") }}
@@ -30,6 +31,16 @@
                         {% for error in form.password.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
+                        <div class="form-text">
+                            <p>Password must meet the following requirements:</p>
+                            <ul>
+                                <li>Minimum 8 characters long</li>
+                                <li>At least one uppercase letter (A-Z)</li>
+                                <li>At least one lowercase letter (a-z)</li>
+                                <li>At least one number (0-9)</li>
+                                <li>At least one special character (!@#$%^&*()-_=+[]{}|;:,.<>?/~`"')</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="mb-3">
                         {{ form.password2.label(class="form-label") }}
@@ -49,4 +60,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

@@ -81,13 +81,18 @@ def about():
     return render_template('about.html', title='About Us')
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("10 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        # Case-insensitive username lookup using SQLAlchemy's func.lower()
+        from sqlalchemy import func
+        username = form.username.data
+        
+        # Try to find user by case-insensitive username match
+        user = User.query.filter(func.lower(User.username) == func.lower(username)).first()
         
         # Check if this is an old SHA-256 password hash (exactly 64 characters)
         # SHA-256 hashes are 64 characters long, bcrypt hashes start with $2b$
@@ -106,14 +111,16 @@ def login():
         elif user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
-          # Check if user account is active (unless they're an admin or manager)
+        
+        # Check if user account is active (unless they're an admin or manager)
         if user.status != 'active' and not user.is_admin and not user.is_manager:
             if user.status == 'pending':
                 flash('Your account is awaiting approval from an administrator.')
             else:  # deactivated
                 flash('Your account has been deactivated. Please contact an administrator.')
             return redirect(url_for('login'))
-              # Make session permanent to respect the PERMANENT_SESSION_LIFETIME setting
+        
+        # Make session permanent to respect the PERMANENT_SESSION_LIFETIME setting
         login_user(user, remember=False)
         
         # Set session as permanent to apply timeout
@@ -248,7 +255,7 @@ def execute_transfer():
     return redirect(url_for('transfer'))
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
-@limiter.limit("3 per 15 minute")
+@limiter.limit("5 per hour")
 def reset_password_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -262,7 +269,7 @@ def reset_password_request():
     return render_template('reset_password_request.html', title='Reset Password', form=form)
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
-@limiter.limit("3 per 15 minute")
+@limiter.limit("5 per hour")
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -276,7 +283,7 @@ def reset_password(token):
     except SignatureExpired:
         flash('The password reset link has expired.')
         return redirect(url_for('reset_password_request'))
-    except Exception as e:
+    except:
         flash('Invalid reset link')
         return redirect(url_for('reset_password_request'))
     
@@ -955,4 +962,4 @@ def manager_transfers():
     return render_template('manager/transfers.html', 
                          title='Transfer Transactions', 
                          transactions=transactions,
-                         users=users) 
+                         users=users)

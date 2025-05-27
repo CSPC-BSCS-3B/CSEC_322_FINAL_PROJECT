@@ -16,6 +16,7 @@
                         {% for error in form.username.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
+                        <div id="username-error" class="text-danger d-none">Username is required</div>
                     </div>
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
@@ -23,6 +24,7 @@
                         {% for error in form.password.errors %}
                         <div class="text-danger">{{ error }}</div>
                         {% endfor %}
+                        <div id="password-error" class="text-danger d-none">Password is required</div>
                     </div>
                     <div class="d-grid gap-2">
                         {{ form.submit(class="btn btn-primary") }}
@@ -36,4 +38,50 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.querySelector('form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('username-error');
+        const passwordError = document.getElementById('password-error');
+
+        loginForm.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Reset error messages
+            usernameError.classList.add('d-none');
+            passwordError.classList.add('d-none');
+
+            // Check username
+            if (!usernameInput.value.trim()) {
+                usernameError.classList.remove('d-none');
+                isValid = false;
+            }
+
+            // Check password
+            if (!passwordInput.value.trim()) {
+                passwordError.classList.remove('d-none');
+                isValid = false;
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Hide error messages when user starts typing
+        usernameInput.addEventListener('input', function() {
+            usernameError.classList.add('d-none');
+        });
+
+        passwordInput.addEventListener('input', function() {
+            passwordError.classList.add('d-none');
+        });
+    });
+</script>
+{% endblock %}
