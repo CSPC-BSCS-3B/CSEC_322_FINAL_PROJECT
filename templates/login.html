@@ -1,52 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="bootstrap-card-neu">
-            <div class="card-header">
-                <h4 class="neu-text-primary"><i class="bi bi-shield-lock me-2"></i>Sign In</h4>
-            </div>
-            <div class="card-body">
-                {% if form.errors %}
-                <div class="neu-alert neu-alert-danger">
-                    <strong>Error!</strong> Please fix the issues below and try again.
-                </div>
-                {% endif %}
-                
-                <form method="post" id="login-form" novalidate>
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        <label for="username" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-person me-2"></i>Username
-                        </label>
-                        {{ form.username(class="form-control glass-form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
-                        {% for error in form.username.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+<div class="container py-5">
+    <div class="bootstrap-card-neu">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 neu-text-primary"><i class="bi bi-shield-lock me-2"></i>Sign In</h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    {% if form.errors %}
+                    <div class="neu-alert neu-alert-danger">
+                        <strong>Error!</strong> Please fix the issues below and try again.
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" id="login-form" novalidate>
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            <label for="username" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-person me-2"></i>Username
+                            </label>
+                            {{ form.username(class="form-control glass-form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
+                            {% for error in form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            <div id="username-error" class="text-danger d-none">Username field cannot be empty</div>
                         </div>
-                        {% endfor %}
-                        <div id="username-error" class="text-danger d-none">Username field cannot be empty</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="glass-form-label neu-text-primary">
-                            <i class="bi bi-key me-2"></i>Password
-                        </label>
-                        {{ form.password(class="form-control glass-form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
-                        {% for error in form.password.errors %}
-                        <div class="invalid-feedback">
-                            {{ error }}
+                        <div class="mb-3">
+                            <label for="password" class="glass-form-label neu-text-primary">
+                                <i class="bi bi-key me-2"></i>Password
+                            </label>
+                            {{ form.password(class="form-control glass-form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
+                            {% for error in form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                            <div id="password-error" class="text-danger d-none">Password field cannot be empty</div>
                         </div>
-                        {% endfor %}
-                        <div id="password-error" class="text-danger d-none">Password field cannot be empty</div>
+                        <div class="d-grid gap-2 mt-4">
+                            {{ form.submit(class="btn neu-btn-primary", id="login-button", style="background-color: var(--neu-dark); color: white;") }}
+                        </div>
+                    </form>
+                    
+                    <div class="mt-4 text-center">
+                        <p>New to SimpleBankApp? <a href="{{ url_for('register') }}" class="neu-text-accent">Register here</a></p>
+                        <p><a href="{{ url_for('reset_password_request') }}" class="neu-text-accent"><i class="bi bi-question-circle me-1"></i>Forgot your password?</a></p>
                     </div>
-                    <div class="d-grid gap-2 mt-4">
-                        {{ form.submit(class="btn neu-btn-primary", id="login-button", style="background-color: var(--neu-dark); color: white;") }}
-                    </div>
-                </form>
-                <div class="mt-4 text-center">
-                    <p>New to SimpleBankApp? <a href="{{ url_for('register') }}" class="neu-text-accent">Register here</a></p>
-                    <p><a href="{{ url_for('reset_password_request') }}" class="neu-text-accent"><i class="bi bi-question-circle me-1"></i>Forgot your password?</a></p>
                 </div>
             </div>
         </div>
