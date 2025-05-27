@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FloatField, RadioField, SelectField, HiddenField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, NumberRange, Optional
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, NumberRange, Optional, Length, Regexp
 from models import User
+import re
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -12,22 +13,51 @@ class LoginForm(FlaskForm):
         return super(LoginForm, self).validate()
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[
+        DataRequired(),
+        Length(min=4, max=20, message="Username must be between 4 and 20 characters long."),
+        Regexp('^[A-Za-z0-9_.-]+$', message="Username can only contain letters, numbers, underscores, dots, and hyphens.")
+    ])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[
+        DataRequired(),
+        Length(min=8, message="Password must be at least 8 characters long."),
+    ])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repeat Password', validators=[DataRequired(), EqualTo('password', message="Passwords must match.")])
     submit = SubmitField('Register')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
+            
+        # Additional validation for special characters handling
+        if not re.match('^[A-Za-z0-9_.-]+$', username.data):
+            raise ValidationError('Username can only contain letters, numbers, underscores, dots, and hyphens.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+    def validate_password(self, password):
+        """Validate password strength"""
+        # Check for minimum length (already done with Length validator, this is a backup)
+        if len(password.data) < 8:
+            raise ValidationError('Password must be at least 8 characters long.')
+            
+        # Check for password complexity - must contain at least three of the following:
+        # Lowercase, uppercase, digit, special character
+        categories = [
+            any(c.islower() for c in password.data),  # lowercase
+            any(c.isupper() for c in password.data),  # uppercase
+            any(c.isdigit() for c in password.data),  # digit
+            any(not c.isalnum() for c in password.data)  # special character
+        ]
+        
+        if sum(categories) < 3:
+            raise ValidationError('Password must contain at least three of the following: lowercase letters, uppercase letters, digits, and special characters.')
 
     def validate(self, extra_validators=None):
         return super(RegistrationForm, self).validate()
