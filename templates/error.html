@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Access Denied</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">{{ message }}</p>
+                <p>You don't have the required permissions to access this page.</p>
+                
+                <div class="mt-4">
+                    {% if current_user.is_manager %}
+                    <a href="{{ url_for('manager_dashboard') }}" class="btn btn-primary">Go to Manager Dashboard</a>
+                    {% elif current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">Go to Admin Dashboard</a>
+                    {% else %}
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Home</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
