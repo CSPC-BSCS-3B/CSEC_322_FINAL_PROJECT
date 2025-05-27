@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FloatField, RadioField, SelectField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, NumberRange, Optional
 from models import User
+from password_policy import validate_password_strength, validate_username
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -28,9 +29,25 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
-
+            
     def validate(self, extra_validators=None):
-        return super(RegistrationForm, self).validate()
+        if not super(RegistrationForm, self).validate():
+            return False
+            
+        # Check password strength
+        is_valid, errors = validate_password_strength(self.password.data)
+        if not is_valid:
+            for error in errors:
+                self.password.errors.append(error)
+            return False
+            
+        # Validate username
+        is_valid, error = validate_username(self.username.data)
+        if not is_valid:
+            self.username.errors.append(error)
+            return False
+            
+        return True
 
 class TransferForm(FlaskForm):
     transfer_type = RadioField('Transfer Type', 
@@ -87,7 +104,17 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
     def validate(self, extra_validators=None):
-        return super(ResetPasswordForm, self).validate()
+        if not super(ResetPasswordForm, self).validate():
+            return False
+            
+        # Check password strength
+        is_valid, errors = validate_password_strength(self.password.data)
+        if not is_valid:
+            for error in errors:
+                self.password.errors.append(error)
+            return False
+            
+        return True
 
 class DepositForm(FlaskForm):
     account_number = StringField('Account Number', validators=[DataRequired()])
@@ -156,4 +183,4 @@ class ConfirmTransferForm(FlaskForm):
     recipient_account = HiddenField('Recipient Account Number')
     amount = HiddenField('Amount')
     transfer_type = HiddenField('Transfer Type')
-    submit = SubmitField('Confirm Transfer') 
+    submit = SubmitField('Confirm Transfer')
