@@ -295,6 +295,20 @@ If Redis is not available, the application will automatically fall back to in-me
 - Can only contain letters, numbers, underscores, dots, and hyphens
 - Unique across the system
 
+### Session Security
+- Complete session clearing after logout
+- Prevention of browser back button access to protected content
+- Cache control headers to prevent sensitive data caching
+- Signed session cookies with HTTPOnly and SameSite protection
+- Session expiration after 30 minutes of inactivity
+- Session regeneration after login to prevent session fixation attacks
+
+### Authentication and Authorization
+- Role-based access control (User, Admin, Manager)
+- CSRF protection for all form submissions
+- Rate limiting to prevent brute force attacks
+- Case-insensitive username lookup with consistent timing
+
 
 ## License
 
