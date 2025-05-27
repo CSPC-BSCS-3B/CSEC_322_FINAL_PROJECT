@@ -343,6 +343,56 @@ a:hover {
   padding: 0.75rem 1.25rem;
 }
 
+/* Neumorphic Form Controls */
+.glass-form-control {
+  background-color: var(--neu-bg);
+  border: 1px solid var(--neu-bg-darker);
+  border-radius: var(--neu-radius);
+  padding: 0.8rem 1.2rem;
+  box-shadow: var(--neu-shadow-inset);
+  color: var(--neu-text-primary);
+  transition: all 0.3s ease;
+}
+
+.glass-form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(113, 192, 187, 0.2), var(--neu-shadow-inset);
+  border-color: var(--neu-accent);
+}
+
+.glass-form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--neu-text-secondary);
+}
+
+/* Neumorphic Button - Primary */
+.neu-btn-primary {
+  background-color: var(--neu-dark);
+  color: white;
+  border: none;
+  border-radius: var(--neu-radius);
+  padding: 0.8rem 1.5rem;
+  font-weight: 500;
+  box-shadow: var(--neu-shadow);
+  transition: all 0.3s ease;
+}
+
+.neu-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--neu-shadow-large);
+  filter: brightness(1.1);
+  background-color: var(--neu-accent); /* Change to accent color on hover */
+  color: white;
+}
+
+.neu-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--neu-shadow-small);
+  filter: brightness(0.95);
+  background-color: var(--neu-medium);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .neu-navbar .nav-link {

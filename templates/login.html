@@ -3,13 +3,13 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <div class="card">
+        <div class="bootstrap-card-neu">
             <div class="card-header">
-                <h4>Sign In</h4>
+                <h4 class="neu-text-primary"><i class="bi bi-shield-lock me-2"></i>Sign In</h4>
             </div>
             <div class="card-body">
                 {% if form.errors %}
-                <div class="alert alert-danger">
+                <div class="neu-alert neu-alert-danger">
                     <strong>Error!</strong> Please fix the issues below and try again.
                 </div>
                 {% endif %}
@@ -17,8 +17,10 @@
                 <form method="post" id="login-form" novalidate>
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
-                        {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
+                        <label for="username" class="glass-form-label neu-text-primary">
+                            <i class="bi bi-person me-2"></i>Username
+                        </label>
+                        {{ form.username(class="form-control glass-form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
                         {% for error in form.username.errors %}
                         <div class="invalid-feedback">
                             {{ error }}
@@ -27,8 +29,10 @@
                         <div id="username-error" class="text-danger d-none">Username field cannot be empty</div>
                     </div>
                     <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
+                        <label for="password" class="glass-form-label neu-text-primary">
+                            <i class="bi bi-key me-2"></i>Password
+                        </label>
+                        {{ form.password(class="form-control glass-form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
                         {% for error in form.password.errors %}
                         <div class="invalid-feedback">
                             {{ error }}
@@ -36,13 +40,13 @@
                         {% endfor %}
                         <div id="password-error" class="text-danger d-none">Password field cannot be empty</div>
                     </div>
-                    <div class="d-grid gap-2">
-                        {{ form.submit(class="btn btn-primary", id="login-button") }}
+                    <div class="d-grid gap-2 mt-4">
+                        {{ form.submit(class="btn neu-btn-primary", id="login-button", style="background-color: var(--neu-dark); color: white;") }}
                     </div>
                 </form>
-                <div class="mt-3 text-center">
-                    <p>New to SimpleBankApp? <a href="{{ url_for('register') }}">Register here</a></p>
-                    <p><a href="{{ url_for('reset_password_request') }}">Forgot your password?</a></p>
+                <div class="mt-4 text-center">
+                    <p>New to SimpleBankApp? <a href="{{ url_for('register') }}" class="neu-text-accent">Register here</a></p>
+                    <p><a href="{{ url_for('reset_password_request') }}" class="neu-text-accent"><i class="bi bi-question-circle me-1"></i>Forgot your password?</a></p>
                 </div>
             </div>
         </div>
@@ -87,14 +91,14 @@
                 event.preventDefault();
                 
                 // Remove any existing error alert
-                const existingErrorAlert = document.querySelector('.alert.alert-danger.mb-3');
+                const existingErrorAlert = document.querySelector('.neu-alert-danger');
                 if (existingErrorAlert) {
                     existingErrorAlert.remove();
                 }
                 
                 // Create and insert a new error alert
                 const errorAlert = document.createElement('div');
-                errorAlert.className = 'alert alert-danger mb-3';
+                errorAlert.className = 'neu-alert neu-alert-danger';
                 errorAlert.innerHTML = '<strong>Error!</strong> Login fields cannot be empty, please try again.';
                 loginForm.insertBefore(errorAlert, loginForm.firstChild);
                 
