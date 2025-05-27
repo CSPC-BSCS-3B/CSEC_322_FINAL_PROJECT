@@ -8,24 +8,36 @@
                 <h4>Sign In</h4>
             </div>
             <div class="card-body">
-                <form method="post" novalidate>
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Please fix the issues below and try again.
+                </div>
+                {% endif %}
+                
+                <form method="post" id="login-form" novalidate>
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control") }}
+                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else "")) }}
                         {% for error in form.username.errors %}
-                        <div class="text-danger">{{ error }}</div>
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
                         {% endfor %}
+                        <div id="username-error" class="text-danger d-none">Username field cannot be empty</div>
                     </div>
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
                         {% for error in form.password.errors %}
-                        <div class="text-danger">{{ error }}</div>
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
                         {% endfor %}
+                        <div id="password-error" class="text-danger d-none">Password field cannot be empty</div>
                     </div>
                     <div class="d-grid gap-2">
-                        {{ form.submit(class="btn btn-primary") }}
+                        {{ form.submit(class="btn btn-primary", id="login-button") }}
                     </div>
                 </form>
                 <div class="mt-3 text-center">
@@ -36,4 +48,66 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('username-error');
+        const passwordError = document.getElementById('password-error');
+
+        loginForm.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Reset error messages
+            usernameError.classList.add('d-none');
+            passwordError.classList.add('d-none');
+            usernameInput.classList.remove('is-invalid');
+            passwordInput.classList.remove('is-invalid');
+
+            // Check username
+            if (!usernameInput.value.trim()) {
+                usernameError.classList.remove('d-none');
+                usernameInput.classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Check password
+            if (!passwordInput.value.trim()) {
+                passwordError.classList.remove('d-none');
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+                // Display overall error alert
+                const errorAlert = document.createElement('div');
+                errorAlert.className = 'alert alert-danger mb-3';
+                errorAlert.innerHTML = '<strong>Error!</strong> Login fields cannot be empty, please try again.';
+                loginForm.insertBefore(errorAlert, loginForm.firstChild);
+                
+                // Automatically remove the alert after 5 seconds
+                setTimeout(() => {
+                    errorAlert.remove();
+                }, 5000);
+            }
+        });
+
+        // Hide error messages when user starts typing
+        usernameInput.addEventListener('input', function() {
+            usernameError.classList.add('d-none');
+            usernameInput.classList.remove('is-invalid');
+        });
+
+        passwordInput.addEventListener('input', function() {
+            passwordError.classList.add('d-none');
+            passwordInput.classList.remove('is-invalid');
+        });
+    });
+</script>
+{% endblock %}
