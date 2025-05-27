@@ -18,7 +18,7 @@
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else "")) }}
+                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), id="username") }}
                         {% for error in form.username.errors %}
                         <div class="invalid-feedback">
                             {{ error }}
@@ -28,7 +28,7 @@
                     </div>
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), id="password") }}
                         {% for error in form.password.errors %}
                         <div class="invalid-feedback">
                             {{ error }}
@@ -85,7 +85,14 @@
             // Prevent form submission if validation fails
             if (!isValid) {
                 event.preventDefault();
-                // Display overall error alert
+                
+                // Remove any existing error alert
+                const existingErrorAlert = document.querySelector('.alert.alert-danger.mb-3');
+                if (existingErrorAlert) {
+                    existingErrorAlert.remove();
+                }
+                
+                // Create and insert a new error alert
                 const errorAlert = document.createElement('div');
                 errorAlert.className = 'alert alert-danger mb-3';
                 errorAlert.innerHTML = '<strong>Error!</strong> Login fields cannot be empty, please try again.';
