@@ -39,7 +39,7 @@
                                 {{ form.firstname.label(class="form-label") }}
                                 {{ form.firstname(class="form-control") }}
                                 {% for error in form.firstname.errors %}
-                                <span class="text-danger">{{ error }}</span>
+                                <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                 {{ form.lastname.label(class="form-label") }}
                                 {{ form.lastname(class="form-control") }}
                                 {% for error in form.lastname.errors %}
-                                <span class="text-danger">{{ error }}</span>
+                                <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         {{ form.email.label(class="form-label") }}
                         {{ form.email(class="form-control") }}
                         {% for error in form.email.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                         {% endfor %}
                     </div>
                     
@@ -72,7 +72,7 @@
                                 {{ form.address_line.label(class="form-label") }}
                                 {{ form.address_line(class="form-control", placeholder="House/Lot/Unit Number, Building Name, Street") }}
                                 {% for error in form.address_line.errors %}
-                                <span class="text-danger">{{ error }}</span>
+                                <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
                             
@@ -87,14 +87,14 @@
                                     {{ form.region_name.label(class="form-label") }}
                                     {{ form.region_name(class="form-select", id="region_select") }}
                                     {% for error in form.region_name.errors %}
-                                    <span class="text-danger">{{ error }}</span>
+                                    <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-6">
                                     {{ form.province_name.label(class="form-label") }}
                                     {{ form.province_name(class="form-select", id="province_select") }}
                                     {% for error in form.province_name.errors %}
-                                    <span class="text-danger">{{ error }}</span>
+                                    <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -104,14 +104,14 @@
                                     {{ form.city_name.label(class="form-label") }}
                                     {{ form.city_name(class="form-select", id="city_select") }}
                                     {% for error in form.city_name.errors %}
-                                    <span class="text-danger">{{ error }}</span>
+                                    <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-6">
                                     {{ form.barangay_name.label(class="form-label") }}
                                     {{ form.barangay_name(class="form-select", id="barangay_select") }}
                                     {% for error in form.barangay_name.errors %}
-                                    <span class="text-danger">{{ error }}</span>
+                                    <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                 {{ form.postal_code.label(class="form-label") }}
                                 {{ form.postal_code(class="form-control", placeholder="e.g. 1200") }}
                                 {% for error in form.postal_code.errors %}
-                                <span class="text-danger">{{ error }}</span>
+                                <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                         {{ form.phone.label(class="form-label") }}
                         {{ form.phone(class="form-control") }}
                         {% for error in form.phone.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                         {% endfor %}
                     </div>
                     
@@ -138,7 +138,7 @@
                         {{ form.status.label(class="form-label") }}
                         {{ form.status(class="form-select") }}
                         {% for error in form.status.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                         {% endfor %}
                     </div>
                     

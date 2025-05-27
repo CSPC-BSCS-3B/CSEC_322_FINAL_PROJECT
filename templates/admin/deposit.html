@@ -23,7 +23,7 @@
                             <button type="button" class="btn btn-outline-secondary" id="lookup-btn">Lookup Account</button>
                         </div>
                         {% for error in form.account_number.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                         {% endfor %}
                         <div class="form-text">Enter the user's account number to deposit funds</div>
                     </div>
@@ -35,7 +35,7 @@
                             {{ form.amount(class="form-control") }}
                         </div>
                         {% for error in form.amount.errors %}
-                        <span class="text-danger">{{ error }}</span>
+                        <div class="alert alert-danger py-1 mt-1">{{ error }}</div>
                         {% endfor %}
                     </div>
                     
@@ -95,4 +95,4 @@
         });
     });
 </script>
-{% endblock %} 
+{% endblock %}
