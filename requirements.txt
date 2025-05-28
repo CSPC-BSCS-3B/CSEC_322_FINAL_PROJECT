@@ -6,7 +6,7 @@ Flask-Bcrypt==1.0.1
 email-validator
 python-dotenv==1.0.0
 WTForms==3.0.1
-Werkzeug==2.3.7
+Werkzeug==3.0.6
 itsdangerous==2.1.2
 pymysql==1.1.1
 cryptography
