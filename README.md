@@ -321,6 +321,46 @@ If Redis is not available, the application will automatically fall back to in-me
 - Debounced search functionality for improved performance with large datasets
 - Responsive table designs with scrollable containers for better data management
 
+## UI Features and Design System that are Added
+
+- **Neumorphic Design Language**
+  - Soft UI with subtle shadows and highlights for depth and dimension
+  - Custom color palette featuring dark purple, blue-gray, teal, and light accents
+  - Consistent border radius and shadow effects across all elements
+  - Smooth hover and interaction states
+
+- **Responsive Layout**
+  - Mobile-first design that adapts to devices from iPhone XR/14 Max to desktop
+  - Stackable components that reorganize based on screen size
+  - Full-width buttons on mobile for improved touch targets
+  - Special adjustments for notched iPhone displays
+
+- **Enhanced Component Library**
+  - Custom form controls with glass-effect styling
+  - Neumorphic cards with subtle hover effects
+  - Badges for status indicators (Active, Pending, Deactivated)
+  - Interactive list items with hover states
+
+- **Advanced User Experience**
+  - Auto-dismissing alerts that fade after 3 seconds
+  - Persistent alerts for critical information (like account balance)
+  - Scrollable tables with fixed headers for large datasets
+  - Search functionality with debounced input
+  - Custom validation feedback with clear error messages
+
+- **Accessibility Considerations**
+  - High contrast text for readability
+  - Consistent focus states for keyboard navigation
+  - Clear iconography paired with text labels
+  - Appropriate spacing for touch targets on mobile
+
+- **Performance Optimizations**
+  - Minimal CSS transitions for smooth interactions
+  - Proper CSS specificity to prevent rendering issues
+  - Custom scrollbars for better user experience
+  - Optimized media queries for various device breakpoints
+
+
 
 ## License
 
