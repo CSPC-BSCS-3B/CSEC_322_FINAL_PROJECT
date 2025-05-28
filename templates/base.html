@@ -81,9 +81,9 @@
                         </span>
                     </li>
                     <li class="nav-item">
-                        <button class="neu-btn-logout" type="button" id="logout-link" aria-haspopup="dialog" aria-controls="logoutConfirmationModal">
+                        <a class="nav-link" href="#" id="logout-link" aria-haspopup="dialog" aria-controls="logoutConfirmationModal">
                             <i class="bi bi-box-arrow-right me-1"></i>Logout
-                        </button>
+                        </a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -109,7 +109,7 @@
         <div class="flash-messages">
             {% for category, message in messages %}
                 {% set alert_class = "neu-alert-" + category if category in ['success', 'info', 'warning', 'danger'] else "neu-alert-info" %}
-                <div class="neu-alert {{ alert_class }} alert-dismissible fade show" role="alert">
+                <div class="neu-alert {{ alert_class }} alert-dismissible fade show" role="alert" id="flash-alert-{{ loop.index }}">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -222,6 +222,33 @@
             menuItems.forEach(item => {
                 if (item.getAttribute('href') === currentLocation) {
                     item.parentElement.parentElement.previousElementSibling.classList.add('active');
+                }
+            });
+            
+            // Auto-dismiss flash messages after 3 seconds
+            const flashMessages = document.querySelectorAll('.neu-alert:not(.neu-alert-persistent)');
+            flashMessages.forEach((alert, index) => {
+                // Initialize Bootstrap alert to make close button work
+                const bsAlert = new bootstrap.Alert(alert);
+                
+                // Set timeout to automatically dismiss after 3 seconds
+                setTimeout(() => {
+                    // Add fade out animation
+                    alert.style.transition = 'opacity 0.5s ease';
+                    alert.style.opacity = '0';
+                    
+                    // Remove the element after the animation completes
+                    setTimeout(() => {
+                        bsAlert.close();
+                    }, 500);
+                }, 3000);
+                
+                // Make sure the close button works immediately as well
+                const closeButton = alert.querySelector('.btn-close');
+                if (closeButton) {
+                    closeButton.addEventListener('click', () => {
+                        bsAlert.close();
+                    });
                 }
             });
         });
