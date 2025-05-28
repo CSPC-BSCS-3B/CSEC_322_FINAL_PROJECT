@@ -88,7 +88,7 @@
         lookupBtn.addEventListener('click', function() {
             const accountNumber = accountInput.value.trim();
             if (accountNumber) {
-                window.location.href = "{{ url_for('admin_deposit') }}?account_number=" + accountNumber;
+                window.location.href = "{{ url_for('admin_deposit') }}?account_number=" + encodeURIComponent(accountNumber);
             } else {
                 alert('Please enter an account number');
             }
