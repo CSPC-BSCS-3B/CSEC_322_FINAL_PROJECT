@@ -49,7 +49,7 @@
                                 Password must be at least 8 characters long and contain at least three of: lowercase letters, uppercase letters, digits, and special characters.
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3">                            
                             <label for="password2" class="glass-form-label neu-text-primary">
                                 <i class="bi bi-check-circle me-2"></i>Confirm Password
                             </label>
@@ -58,11 +58,7 @@
                             <div class="invalid-feedback">
                                 {{ error }}
                             </div>
-                            {% endfor %}
-                        </div>
-                        
-                        <div class="neu-alert neu-alert-info mb-4">
-                            <i class="bi bi-info-circle me-2"></i>Your account will need approval from an administrator before you can use it.
+                                {% endfor %}
                         </div>
                         
                         <div class="d-grid gap-2 mt-4">
