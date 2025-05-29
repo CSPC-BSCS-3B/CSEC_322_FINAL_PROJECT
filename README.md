@@ -2,7 +2,9 @@
 ## CSEC 322 - Web Application Security (Final Project)
 *Date: May 25, 2025*
 
-📺 **Project Presentation Video**: [Watch on YouTube](https://www.youtube.com/watch?v=0lGmSwb3KCY)
+📺 **Project Presentation Video**: [Watch on YouTube](https://www.youtube.com/watch?v=0lGmSwb3KCY)  
+📝 **Test Cases**: [View Test Cases](https://docs.google.com/spreadsheets/d/1epIQcieHgBy6u4o8p9JyfC3KrZvejKNk/edit?usp=sharing&ouid=105682136252182233169&rtpof=true&sd=true)
+
 
 ### Live Demo
 
