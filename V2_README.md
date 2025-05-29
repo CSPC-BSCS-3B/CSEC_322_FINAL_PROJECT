@@ -104,6 +104,9 @@ The initial application still has several security vulnerabilities that need to 
 
 ## h. Penetration Testing Report: Summary of Vulnerabilities Identified, Exploitation Steps, and Recommendations
 
+We used Burp Suite, a professional web vulnerability testing tool that includes essential features such as Proxy, Repeater, Intruder, and Decoder, which allowed us to intercept, modify, and analyze HTTP requests. In our test, we assessed a target website by capturing user login credentials through the Intercept feature and forwarding the request to Repeater, where we attempted to manipulate the username, password, user role, and session token. Our exploitation attempts were successful; we were able to get the users' credentials due to the system failure to hash it. Aside from that, we also made penetration test using developer tool in web and below are some of the results: 
+
+
 ### 1. Password Security Vulnerabilities
 
 **Vulnerability**: Weak password requirements and validation
