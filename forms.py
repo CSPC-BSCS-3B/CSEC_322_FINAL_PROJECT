@@ -42,11 +42,6 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
     def validate_password(self, password):
-        """Validate password strength"""
-        # Check for minimum length (already done with Length validator, this is a backup)
-        if len(password.data) < 8:
-            raise ValidationError('Password must be at least 8 characters long.')
-            
         # Check for password complexity - must contain at least three of the following:
         # Lowercase, uppercase, digit, special character
         categories = [
