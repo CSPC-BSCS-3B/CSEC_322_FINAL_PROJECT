@@ -1,367 +1,375 @@
-# Simple Banking App
+# Simple Banking App (Version2)
+## CSEC 322 - Web Application Security (Final Project)
+*Date: May 25, 2025*
 
-A user-friendly and responsive Flask-based banking application designed for deployment on PythonAnywhere. This application allows users to create accounts, perform simulated money transfers between accounts, view transaction history, and securely manage their credentials.
+📺 **Project Presentation Video**: [Watch on YouTube](https://www.youtube.com/watch?v=0lGmSwb3KCY)
 
-## Features
+### Live Demo
 
-- **User Authentication**
-  - Secure login with username/password
-  - Registration of new users
-  - Password recovery mechanism (email-based)
+The application is deployed and accessible online through pythonanywhere.com:
 
-- **Account Management**
-  - Display of account balance
-  - View recent transaction history (last 10 transactions)
+**[Live Demo](https://yosoh40503.pythonanywhere.com/)**
 
-- **Fund Transfer**
-  - Transfer money to other registered users
-  - Confirmation screen before completing transfers
-  - Transaction history updated after transfers
+---
 
-- **User Role Management**
-  - Regular user accounts
-  - Admin users with account approval capabilities
-  - Manager users who can manage admin accounts
+## Group Members
+- Divino Franco R. Aurellano
+- Maica S. Romaraog
+- Lj Tan T. Saldivar
 
-- **Location Data Integration**
-  - Philippine Standard Geographic Code (PSGC) API integration
-  - Hierarchical location data selection (Region, Province, City, Barangay)
-  - Form fields pre-populated with location data
+---
 
-- **Admin Features**
-  - User account approval workflow
-  - Account activation/deactivation
-  - Deposit funds to user accounts
-  - Create new accounts
-  - Edit user information
 
-- **Manager Features**
-  - Create and manage admin accounts
-  - View admin transaction logs
-  - Monitor all system transfers
+## Introduction
+Simple Banking App is a Flask-based web application designed to simulate a basic banking system. This application provides users with the ability to manage accounts, transfer funds, and perform basic banking operations in a secure environment.
 
-- **Security**
-  - Password hashing with bcrypt for secure storage
-  - Secure session management
-  - Token-based password reset
-  - API rate limiting to prevent abuse
-  - CSRF protection for all forms
+## Objectives
+1. Develop a comprehensive web-based banking application with robust security measures
+2. Implement essential banking features with appropriate security controls
+3. Identify and remediate common web application security vulnerabilities
+4. Enhance user experience with security-focused feedback and notifications
+5. Deploy a secure application to a cloud hosting platform (PythonAnywhere)
+6. Document security improvements and provide comprehensive setup instructions
 
-## Project Structure
+## e. Original Application Features
 
-The project is organized into the following directories:
+1. **User Authentication**
+   - Login with username/password
+   - Registration of new users
+   - Password recovery mechanism (email-based)
 
-- **Root Directory**: Contains the main application files (app.py, routes.py, etc.)
-- **docs/**: Documentation files
-  - `RATE_LIMITING.md`: Details about rate limiting security features
-  - `SESSION_SECURITY.md`: Information about session security implementation
-  - `CONTRIBUTION.md`: Guidelines for contributors
-- **tests/**: Test scripts and utilities
-  - `test_rate_limits.py`: Tests for rate limiting functionality
-- **templates/**: HTML templates for the web interface
-  - `admin/`: Admin dashboard and functionality templates
-  - `manager/`: Manager dashboard and functionality templates
+2. **Account Management**
+   - Display of account balance
+   - View of transaction history (last 10 transactions)
 
-## Getting Started
+3. **Fund Transfer**
+   - Transfer money to other registered users
+   - Confirmation screen before completing transfers
+   - Transaction history updated after transfers
+
+4. **User Role Management**
+   - Regular user accounts
+   - Admin users with account approval capabilities
+   - Manager users who can manage admin accounts
+
+5. **Location Data Integration**
+   - Philippine Standard Geographic Code (PSGC) API integration
+   - Hierarchical location data selection (Region, Province, City, Barangay)
+
+## f. Security Assessment Findings: Vulnerabilities Identified in the Original Application
+
+Despite the following security measures already in place:
+- Password hashing with bcrypt
+- CSRF protection on forms
+- Rate limiting to prevent abuse
+- Secure session management
+- Two-step transaction confirmation
+- Admin approval workflow for new accounts
+
+The initial application still has several security vulnerabilities that need to be addressed:
+
+1. **Password Security Issues**
+   - Insufficient password complexity requirements
+   - Inadequate protection against password brute force attacks
+   - No password expiration policy or account lockout mechanism
+
+2. **Session Management Vulnerabilities**
+   - Inadequate session timeout settings
+   - Lack of protection against session fixation attacks
+   - No prevention of browser back button access to protected content
+
+3. **Authentication and Authorization Weaknesses**
+   - Insufficient role-based access control
+   - Vulnerable to URL manipulation attacks(bug in RBAC)
+   - Missing CSRF protection on critical forms
+   - No rate limiting for sensitive endpoints
+
+4. **User Input Validation**
+   - Inadequate validation of form inputs
+   - No protection against XSS attacks
+   - Insufficient error handling
+
+5. **UX and Security Balance**
+   - Lack of clear validation error messages
+   - No confirmation for critical actions
+   - Insufficient feedback for security events
+
+## g. Initial Technology Stack
+- **Backend**: Python with Flask framework
+- **Database**: MySQL with SQLAlchemy ORM
+- **Frontend**: HTML, CSS, Bootstrap 5
+- **Authentication**: Flask-Login, Flask-Bcrypt
+- **Security**: Flask-Limiter, CSRF protection
+- **Forms**: Flask-WTF
+
+## h. Penetration Testing Report: Summary of Vulnerabilities Identified, Exploitation Steps, and Recommendations
+
+We used Burp Suite, a professional web vulnerability testing tool that includes essential features such as Proxy, Repeater, Intruder, and Decoder, which allowed us to intercept, modify, and analyze HTTP requests. In our test, we assessed a target website by capturing user login credentials through the Intercept feature and forwarding the request to Repeater, where we attempted to manipulate the username, password, user role, and session token. Our exploitation attempts were successful; we were able to get the users' credentials due to the system failure to hash it. Aside from that, we also made penetration test using developer tool in web and below are some of the results: 
+
+
+### 1. Password Security Vulnerabilities
+
+**Vulnerability**: Weak password requirements and validation
+- **Exploitation Steps**: 
+  1. Created accounts with simple passwords like "password123" that passed validation
+  2. Observed that password complexity was not enforced
+
+**Recommendations**:
+- Implement strict password complexity requirements (minimum length, character diversity)
+- Add password strength meters on registration forms
+- Implement account lockout after multiple failed attempts
+
+### 2. Session Management Vulnerabilities
+
+**Vulnerability**: Insufficient session security
+- **Exploitation Steps**:
+  1. Captured session cookies and reused them after extended periods
+  2. Successfully accessed authenticated pages using browser back button after logout
+  3. Demonstrated session fixation by setting a known session ID before login
+
+**Recommendations**:
+- Implement proper session timeout settings
+- Use secure, HttpOnly, and SameSite cookie attributes
+- Regenerate session IDs on authentication state changes
+- Add cache control headers to prevent browser caching of sensitive pages
+
+### 3. CSRF Vulnerabilities
+
+**Vulnerability**: Missing CSRF protection on critical forms
+- **Exploitation Steps**:
+  1. Created a malicious website that submitted forms to the banking application
+  2. Successfully performed fund transfers without user knowledge
+  3. Modified user account details through cross-site requests
+
+**Recommendations**:
+- Implement CSRF tokens on all forms, especially for sensitive operations
+- Add SameSite cookie restrictions
+- Implement proper referrer checking
+
+### 4. Input Validation and XSS Vulnerabilities
+
+**Vulnerability**: Inadequate input validation allowing XSS attacks
+- **Exploitation Steps**:
+  1. Injected JavaScript into form fields that were displayed to other users
+  2. Stole session cookies through injected JavaScript
+
+**Recommendations**:
+- Implement strict input validation for all user inputs
+- Use proper output encoding when displaying user-provided data
+
+### 5. Rate Limiting Vulnerabilities
+
+**Vulnerability**: Lack of rate limiting on sensitive endpoints
+- **Exploitation Steps**:
+  1. Used automated tools to perform thousands of login attempts per minute
+  2. Attempted large numbers of transfers to identify valid account numbers
+  3. Overwhelmed server resources with repeated requests
+
+**Recommendations**:
+- Implement rate limiting on all sensitive endpoints
+- Add progressive delays for repeated failed attempts
+- Implement IP-based throttling for suspicious activity
+
+## i. Remediation Plan: Steps Taken to Address Identified Vulnerabilities
+
+### 1. Password Security Enhancements
+
+**Implemented Solutions**:
+- Enhanced password validation requiring at least 8 characters and 3 character types (lowercase, uppercase, digits, special characters)
+- Added server-side password strength validation in registration and password reset forms
+- Implemented bcrypt password hashing with appropriate work factors for secure storage
+- Added client-side password strength indicators for real-time feedback
+
+**Code Changes**:
+- Added complexity validation in `forms.py` for the `RegistrationForm` class
+- Enhanced password hashing mechanism in `models.py` using bcrypt
+- Improved error messages for password validation failures
+
+### 2. Session Security Improvements
+
+**Implemented Solutions**:
+- Set session timeout to 30 minutes of inactivity
+- Implemented secure session cookies with HttpOnly, Secure, and SameSite attributes
+- Added session regeneration on login, logout, and privilege changes
+- Implemented cache control headers to prevent browser caching of sensitive data
+
+**Code Changes**:
+- Updated session configuration in `app.py` to include security settings
+- Added cache control headers in global after_request handler
+- Implemented session regeneration in authentication-related routes
+
+### 3. CSRF Protection Implementation
+
+**Implemented Solutions**:
+- Added CSRF protection to all forms using Flask-WTF
+- Implemented proper token validation on form submission
+- Added global CSRF protection with CSRFProtect extension
+
+**Code Changes**:
+- Initialized CSRF protection in `app.py`
+- Added hidden CSRF token fields to all form templates
+- Implemented proper error handling for CSRF validation failures
+
+### 4. Input Validation and XSS Prevention
+
+**Implemented Solutions**:
+- Added comprehensive input validation for all user inputs
+- Implemented proper output encoding in templates
+- Added more specific error messages for validation failures
+
+**Code Changes**:
+- Enhanced form validators in `forms.py` with more specific requirements
+- Improved error handling and user feedback for validation failures
+- Added regex-based validation for critical fields
+
+### 5. Rate Limiting Implementation
+
+**Implemented Solutions**:
+- Added rate limiting on all sensitive endpoints using Flask-Limiter
+- Implemented different rate limits based on endpoint sensitivity
+- Added support for Redis as a rate limit storage backend
+- Implemented proper error handling for rate limit exceeded scenarios
+
+**Code Changes**:
+- Configured Flask-Limiter in `extensions.py`
+- Added route-specific rate limits in `routes.py`
+- Created a dedicated rate limit error template
+
+### 6. UI/UX Security Improvements
+
+**Neumorphic Design Language**:
+- Soft UI with subtle shadows and highlights for depth and dimension
+- Custom color palette featuring dark purple, blue-gray, teal, and light accents
+- Consistent border radius and shadow effects across all elements
+- Smooth hover and interaction states
+
+**Responsive Layout**:
+- Mobile-first design that adapts to devices from iPhone XR/14 Max to desktop
+- Stackable components that reorganize based on screen size
+- Full-width buttons on mobile for improved touch targets
+- Special adjustments for notched iPhone displays
+
+**Enhanced Component Library**:
+- Custom form controls with glass-effect styling
+- Neumorphic cards with subtle hover effects
+- Badges for status indicators (Active, Pending, Deactivated)
+- Interactive list items with hover states
+
+**Advanced User Experience**:
+- Auto-dismissing alerts that fade after 3 seconds
+- Persistent alerts for critical information (like account balance)
+- Scrollable tables with fixed headers for large datasets
+- Search functionality with debounced input
+- Custom validation feedback with clear error messages
+
+**Accessibility Considerations**:
+- High contrast text for readability
+- Consistent focus states for keyboard navigation
+- Clear iconography paired with text labels
+- Appropriate spacing for touch targets on mobile
+
+**Performance Optimizations**:
+- Minimal CSS transitions for smooth interactions
+- Proper CSS specificity to prevent rendering issues
+- Custom scrollbars for better user experience
+
+## j. Technology Stack: Updated List of Technologies Used
+
+### Backend
+- **Python 3.7+**: Core programming language
+- **Flask**: Web framework for building the application
+- **Flask-SQLAlchemy**: ORM for database interactions
+- **Flask-Login**: User authentication management
+- **Flask-Bcrypt**: Secure password hashing
+- **Flask-WTF**: Form handling and CSRF protection
+- **Flask-Limiter**: Rate limiting to prevent abuse
+- **itsdangerous**: Secure token generation for password reset
+- **PyMySQL**: MySQL database connector
+- **python-dotenv**: Environment variable management
+
+### Database
+- **MySQL/MariaDB**: Relational database for data storage
+- **SQLAlchemy ORM**: Object-relational mapping for database interactions
+
+### Frontend
+- **HTML5/CSS3**: Core web technologies
+- **Bootstrap 5**: Frontend framework for responsive design
+- **Neumorphic Design**: Custom CSS design system for a modern UI
+- **JavaScript**: Client-side interactivity and validation
+- **Bootstrap Icons**: Icon library for visual elements
+
+### Security Tools
+- **CSRF Protection**: Preventing cross-site request forgery
+- **Bcrypt**: Secure password hashing algorithm
+- **Rate Limiting**: Protection against brute force and DoS attacks
+- **Session Management**: Secure handling of user sessions
+- **Content Security Policy**: Protection against XSS attacks
+
+### External APIs
+- **PSGC API**: Philippine Standard Geographic Code API for location data
+- **Fallback mechanisms**: For handling external API unavailability
+
+### Deployment
+- **PythonAnywhere**: Web hosting platform
+- **MySQL Database (hosted)**: Database service
+- **WSGI**: Web server gateway interface for deployment
+
+## k. Setup Instructions: Instructions on How to Set Up and Run the Improved Application
 
 ### Prerequisites
-- Python 3.7+
+- Python 3.7 or higher
 - pip (Python package manager)
 - MySQL Server 5.7+ or MariaDB 10.2+
+- Git (for cloning the repository)
 
-### Database Setup
+### Local Development Setup
 
-1. Install MySQL Server or MariaDB if you haven't already:
-   ```
-   # For Ubuntu/Debian
-   sudo apt update
-   sudo apt install mysql-server
-   
-   # For macOS with Homebrew
-   brew install mysql
-   
-   # For Windows
-   # Download and install from the official website
+1. **Clone the Repository**
+   ```powershell
+   git clone https://github.com/yourusername/simple-banking-app-v2.git
+   cd simple-banking-app-v2
    ```
 
-2. Create a database user and set privileges:
-   ```
-   mysql -u root -p
-   
-   # In MySQL prompt
-   CREATE USER 'bankapp'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON *.* TO 'bankapp'@'localhost';
-   FLUSH PRIVILEGES;
-   EXIT;
+2. **Create a Virtual Environment** (Optional but recommended)
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
    ```
 
-3. Update the `.env` file with your MySQL credentials:
+3. **Install Dependencies**
+   ```powershell
+   pip install -r requirements.txt
    ```
-   DATABASE_URL=mysql+pymysql://bankapp:your_password@localhost/simple_banking
-   MYSQL_USER=bankapp
-   MYSQL_PASSWORD=your_password
+
+4. **Configure Environment Variables**
+   - Create a `.env` file in the project root with the following variables:
+   ```
+   MYSQL_USER=your_mysql_username
+   MYSQL_PASSWORD=your_mysql_password
    MYSQL_HOST=localhost
    MYSQL_PORT=3306
    MYSQL_DATABASE=simple_banking
+   REDIS_URL=memory://  # Use Redis URL if available
+   FLASK_DEBUG=FALSE
    ```
 
-4. Initialize the database:
-   ```
+5. **Initialize the Database**
+   ```powershell
    python init_db.py
    ```
 
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/lanlanjr/simple-banking-app.git
-   cd simple-banking-app
-   
-   # Set up your own repository
-   # First, create a new repository named 'simple-banking-app-v2' on GitHub
-   
-   # Then configure your local repository
-   git remote remove origin
-   git remote add origin https://github.com/yourusername/simple-banking-app-v2.git
-   git branch -M main
-   git push -u origin main
-   
-   # Note: Replace 'yourusername' with your actual GitHub username
-   ```
-
-2. Install the required packages:
-   ```
-   pip install -r requirements.txt
-   ```
-
-3. Run the application:
-   ```
+6. **Run the Application**
+   ```powershell
    python app.py
    ```
 
-4. Access the application at `http://localhost:5000`
+7. **Access the Application**
+   - Open your browser and navigate to `http://localhost:5000`
+   - Default admin credentials: Username: `admin`, Password: `admin123`
 
-## Deploying to PythonAnywhere
-
-1. Create a PythonAnywhere account at [www.pythonanywhere.com](https://www.pythonanywhere.com)
-
-2. Upload your code using Git:
-   ```
-   git clone https://github.com/yourusername/simple-banking-app-v2.git
-   ```
-
-3. Install requirements:
-   ```
-   cd simple-banking-app-v2
-   pip install -r requirements.txt
-   ```
-
-4. Set up MySQL database on PythonAnywhere:
-   - Go to the Databases tab in your PythonAnywhere dashboard
-   - Create a new MySQL database
-   - Note the database name, username, and password
-   - Update your .env file with these credentials
-
-5. Initialize your database on PythonAnywhere:
-   ```
-   python init_db.py
-   ```
-
-6. Configure a new web app via the PythonAnywhere dashboard:
-   - Select "Manual configuration"
-   - Choose Python 3.8
-   - Set source code directory to `/home/yourusername/simple-banking-app-v2`
-   - Set working directory to `/home/yourusername/simple-banking-app-v2`
-   - Set WSGI configuration file to point to your Flask app
-
-7. Add environment variables in the PythonAnywhere dashboard for security
-
-## Usage
-
-### Registration
-- Navigate to the registration page
-- Enter username, email, and password
-- Confirm your password
-- Submit the form to create your account (pending admin approval)
-
-### Login
-- Enter your username and password
-- Click "Sign In"
-
-### Account Overview
-- View your current balance
-- See your recent transaction history
-
-### Transfer Funds
-- Navigate to the Transfer page
-- Enter recipient's username or account number
-- Enter the amount to transfer
-- Confirm the transfer details on the confirmation screen
-- Complete the transfer
-
-### Password Reset
-- Click "Forgot your password?" on the login page
-- Enter your registered email address
-- Follow the link in the email (simulated in this demo)
-- Create a new password
-
-### Admin Features
-- Approve new user registrations
-- Activate/deactivate user accounts
-- Create new user accounts
-- Make over-the-counter deposits to user accounts
-- Edit user details including location information
-
-### Manager Features
-- Create new admin accounts
-- Toggle admin status for users
-- View all user transactions
-- Monitor and audit admin activities
-
-## User Roles
-
-The system supports three types of user roles:
-
-1. **Regular Users** - Can manage their own account, make transfers, and view their transaction history.
-
-2. **Admin Users** - Have all regular user privileges plus:
-   - Approve/reject new user registrations
-   - Activate/deactivate user accounts
-   - Create new user accounts
-   - Make deposits to user accounts
-   - Edit user information
-
-3. **Manager Users** - Have all admin privileges plus:
-   - Create and manage admin accounts
-   - View admin transaction logs
-   - Monitor all system transfers
-   - System-wide oversight capabilities
-
-## Address Management with PSGC API
-
-The application integrates with the Philippine Standard Geographic Code (PSGC) API to provide standardized address selection for user profiles. The address system follows the Philippine geographical hierarchy:
-
-- Region
-- Province
-- City/Municipality
-- Barangay
-
-This integration ensures addresses are standardized and validates location data according to the Philippine geographical structure.
-
-## Technologies Used
-
-- **Backend**: Python, Flask
-- **Database**: MySQL (with SQLAlchemy ORM)
-- **Frontend**: HTML, CSS, Bootstrap 5
-- **Authentication**: Flask-Login, Werkzeug, Flask-Bcrypt
-- **Forms**: Flask-WTF, WTForms
-- **Security**: Flask-Limiter for API rate limiting, CSRF protection, Password strength validation
-- **External API**: PSGC API for Philippine geographic data
-
-## Rate Limiting
-
-The application uses Flask-Limiter to implement API rate limiting, which protects against potential DoS attacks and abusive bot activity. The rate limits are configured as follows:
-
-- **Login**: 10 attempts per minute
-- **Registration**: 5 attempts per minute
-- **Password Reset**: 5 attempts per hour
-- **Money Transfer**: 20 attempts per hour
-- **API Endpoints**: 30 requests per minute
-- **Admin Dashboard**: 60 requests per hour
-- **Admin Account Creation**: 20 accounts per hour
-- **Admin Deposits**: 30 deposits per hour
-- **Manager Dashboard**: 60 requests per hour
-- **Admin Creation**: 10 admin accounts per hour
-
-By default, the rate limiting data is stored in memory. For production use, it's recommended to use Redis as a storage backend for persistence across application restarts. To enable Redis storage:
-
-1. Install Redis server on your system
-2. Update the `.env` file with your Redis URL:
-   ```
-   REDIS_URL=redis://localhost:6379/0
-   ```
-
-If Redis is not available, the application will automatically fall back to in-memory storage.
-
-## Security Features that are Added
-
-### Password Requirements
-- Minimum length of 8 characters
-- Must contain at least three of: lowercase letters, uppercase letters, digits, and special characters
-- Password hashing using bcrypt
-
-### Username Requirements
-- Length between 4-20 characters
-- Can only contain letters, numbers, underscores, dots, and hyphens
-- Unique across the system
-
-### Session Security
-- Complete session clearing after logout
-- Prevention of browser back button access to protected content
-- Cache control headers to prevent sensitive data caching
-- Signed session cookies with HTTPOnly and SameSite protection
-- Session expiration after 30 minutes of inactivity
-- Session regeneration after login to prevent session fixation attacks
-
-### Authentication and Authorization
-- Role-based access control (User, Admin, Manager) with strict route protection
-- Strict separation between admin and manager role permissions
-- Prevention of URL manipulation to access unauthorized functionality
-- CSRF protection for all form submissions
-- Rate limiting to prevent brute force attacks
-- Case-insensitive username lookup with consistent timing
-
-### User Experience and Security
-- Clear, color-coded validation error messages
-- Real-time client-side form validation
-- Empty field validation with descriptive error messages
-- Protection against multiple form submissions
-- Logout confirmation to prevent accidental data loss during transactions
-- Prevention of accidental navigation away from unsaved changes
-- Debounced search functionality for improved performance with large datasets
-- Responsive table designs with scrollable containers for better data management
-
-## UI Features and Design System that are Added
-
-- **Neumorphic Design Language**
-  - Soft UI with subtle shadows and highlights for depth and dimension
-  - Custom color palette featuring dark purple, blue-gray, teal, and light accents
-  - Consistent border radius and shadow effects across all elements
-  - Smooth hover and interaction states
-
-- **Responsive Layout**
-  - Mobile-first design that adapts to devices from iPhone XR/14 Max to desktop
-  - Stackable components that reorganize based on screen size
-  - Full-width buttons on mobile for improved touch targets
-  - Special adjustments for notched iPhone displays
-
-- **Enhanced Component Library**
-  - Custom form controls with glass-effect styling
-  - Neumorphic cards with subtle hover effects
-  - Badges for status indicators (Active, Pending, Deactivated)
-  - Interactive list items with hover states
-
-- **Advanced User Experience**
-  - Auto-dismissing alerts that fade after 3 seconds
-  - Persistent alerts for critical information (like account balance)
-  - Scrollable tables with fixed headers for large datasets
-  - Search functionality with debounced input
-  - Custom validation feedback with clear error messages
-
-- **Accessibility Considerations**
-  - High contrast text for readability
-  - Consistent focus states for keyboard navigation
-  - Clear iconography paired with text labels
-  - Appropriate spacing for touch targets on mobile
-
-- **Performance Optimizations**
-  - Minimal CSS transitions for smooth interactions
-  - Proper CSS specificity to prevent rendering issues
-  - Custom scrollbars for better user experience
-  - Optimized media queries for various device breakpoints
-
-
+## Future Improvements
+- Implement advanced security features such as multi-factor authentication (MFA)
+- Add transaction limits and alerts for suspicious activities
 
 ## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
