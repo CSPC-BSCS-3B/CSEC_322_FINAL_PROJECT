@@ -1,13 +1,9 @@
 import requests
 import json
-import os
 from functools import lru_cache
 
 # Base URL for the API
 BASE_URL = "https://psgc.gitlab.io/api"
-
-# Check if we're running on PythonAnywhere (for handling proxy limitations)
-IS_PYTHONANYWHERE = 'PYTHONANYWHERE_SITE' in os.environ
 
 @lru_cache(maxsize=32)
 def get_regions():
@@ -119,50 +115,8 @@ def get_municipality_by_code(code):
 
 def get_barangay_by_code(code):
     """Get a specific barangay by code (requires full search)"""
-    # If we're on PythonAnywhere, we can't make this direct API call due to proxy limitations
-    if IS_PYTHONANYWHERE:
-        # Use a simplified approach - try to find it in existing barangays
-        # This won't be perfect but it's better than failing with an error
-        all_barangays = []
-        try:
-            # First check if it's a city barangay
-            cities = get_cities()
-            for city in cities:
-                barangays = get_barangays(city_code=city['code'])
-                for barangay in barangays:
-                    if barangay['code'] == code:
-                        return barangay
-                
-            # Then check if it's a municipality barangay
-            municipalities = get_municipalities()
-            for municipality in municipalities:
-                barangays = get_barangays(municipality_code=municipality['code'])
-                for barangay in barangays:
-                    if barangay['code'] == code:
-                        return barangay
-                        
-            # If not found, create a basic fallback entry
-            # This allows the UI to at least show something rather than error
-            return {
-                "code": code,
-                "name": f"Barangay {code[-3:]}",  # Use last 3 digits as a simple name
-            }
-        except Exception as e:
-            print(f"Error searching for barangay by code on PythonAnywhere: {e}")
-            # Return a generic placeholder on error
-            return {
-                "code": code,
-                "name": f"Barangay {code[-3:]}",
-            }
-    
-    # For non-PythonAnywhere environments, make the direct API call
-    try:
-        url = f"{BASE_URL}/barangays/{code}"
-        response = requests.get(url, timeout=5)
-        if response.status_code == 200:
-            return response.json()
-    except Exception as e:
-        print(f"Error fetching barangay by code: {e}")
-    
-    # Fallback to None if not found
-    return None
+    url = f"{BASE_URL}/barangays/{code}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return None 
