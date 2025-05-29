@@ -2,7 +2,9 @@
 ## CSEC 322 - Web Application Security (Final Project)
 *Date: May 25, 2025*
 
-📺 **Project Presentation Video**: [Watch on YouTube](https://www.youtube.com/watch?v=0lGmSwb3KCY)
+📺 **Project Presentation Video**: [Watch on YouTube](https://www.youtube.com/watch?v=0lGmSwb3KCY)  
+📝 **Test Cases**: [View Test Cases](https://docs.google.com/spreadsheets/d/1epIQcieHgBy6u4o8p9JyfC3KrZvejKNk/edit?usp=sharing&ouid=105682136252182233169&rtpof=true&sd=true)
+
 
 ### Live Demo
 
@@ -326,7 +328,7 @@ We used Burp Suite, a professional web vulnerability testing tool that includes 
 
 1. **Clone the Repository**
    ```powershell
-   git clone https://github.com/yourusername/simple-banking-app-v2.git
+   git clone https://github.com/CSPC-BSCS-3B/simple-banking-app-v2.git
    cd simple-banking-app-v2
    ```
 
