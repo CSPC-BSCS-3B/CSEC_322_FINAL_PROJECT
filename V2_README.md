@@ -112,8 +112,7 @@ We used Burp Suite, a professional web vulnerability testing tool that includes 
 **Vulnerability**: Weak password requirements and validation
 - **Exploitation Steps**: 
   1. Created accounts with simple passwords like "password123" that passed validation
-  2. Used common password lists to successfully brute force multiple accounts
-  3. Observed that password complexity was not enforced
+  2. Observed that password complexity was not enforced
 
 **Recommendations**:
 - Implement strict password complexity requirements (minimum length, character diversity)
