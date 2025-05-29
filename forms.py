@@ -43,9 +43,8 @@ class RegistrationForm(FlaskForm):
 
     def validate_password(self, password):
         """Validate password strength"""
-        # Check for minimum length (already done with Length validator, this is a backup)
-        if len(password.data) < 8:
-            raise ValidationError('Password must be at least 8 characters long.')
+        # No need to check length again as it's already done by the Length validator
+        # Only check for complexity requirements
             
         # Check for password complexity - must contain at least three of the following:
         # Lowercase, uppercase, digit, special character
@@ -186,4 +185,4 @@ class ConfirmTransferForm(FlaskForm):
     recipient_account = HiddenField('Recipient Account Number')
     amount = HiddenField('Amount')
     transfer_type = HiddenField('Transfer Type')
-    submit = SubmitField('Confirm Transfer') 
+    submit = SubmitField('Confirm Transfer')
