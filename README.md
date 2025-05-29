@@ -326,7 +326,7 @@ We used Burp Suite, a professional web vulnerability testing tool that includes 
 
 1. **Clone the Repository**
    ```powershell
-   git clone https://github.com/yourusername/simple-banking-app-v2.git
+   git clone https://github.com/CSPC-BSCS-3B/simple-banking-app-v2.git
    cd simple-banking-app-v2
    ```
 
